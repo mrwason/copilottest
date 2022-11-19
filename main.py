@@ -1,25 +1,15 @@
-"""
-function to get the data from the database
-"""
-def get_data():
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM data")
-    data = c.fetchall()
-    conn.close()
-    return data
+def multiply_large_numbers(a, b):
+    a = a[::-1]
+    b = b[::-1]
+    result = [0] * (len(a) + len(b))
 
-"""
-function to multiply two matrices
-"""
-def multiply_matrices(matrix1, matrix2):
-    result = []
-    for i in range(len(matrix1)):
-        row = []
-        for j in range(len(matrix2[0])):
-            sum = 0
-            for k in range(len(matrix2)):
-                sum += matrix1[i][k] * matrix2[k][j]
-            row.append(sum)
-        result.append(row)
-    return result
+    for i in range(len(a)):
+        for j in range(len(b)):
+            result[i + j] += int(a[i]) * int(b[j])
+            result[i + j + 1] += result[i + j] // 10
+            result[i + j] %= 10
+
+    while len(result) > 1 and result[-1] == 0:
+        result.pop()
+
+    return ''.join(map(str, result[::-1]))
